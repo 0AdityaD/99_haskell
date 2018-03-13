@@ -35,3 +35,20 @@ diffSelect' n xs = do   r <-randomRIO (0, length xs - 1)
                         let ys = take (r) xs ++ drop (r+1) xs    
                         rs <- diffSelect' (n-1) ys
                         return ((xs !! r):rs)
+
+-- Problem 25
+
+rndPermu :: [a] -> IO [a]
+rndPermu [] = return []
+rndPermu (xs) = do  r <- randomRIO (0, length xs - 1)
+                    let ys = take (r) xs ++ drop (r+1) xs
+                    rs <- rndPermu ys
+                    return ((xs !! r):rs)
+
+-- Problem 26
+
+combinations :: Int -> [a] -> [[a]]
+combinations 0 xs = [[]]
+combinations n xs = [(xs !! i):ys | i <- [0..(length xs - 1)],
+                                    ys <- combinations (n-1) (drop (i+1) xs)]
+    
