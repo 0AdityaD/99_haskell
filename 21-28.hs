@@ -52,3 +52,18 @@ combinations 0 xs = [[]]
 combinations n xs = [(xs !! i):ys | i <- [0..(length xs - 1)],
                                     ys <- combinations (n-1) (drop (i+1) xs)]
     
+-- Problem 27
+
+dropR :: Eq a => [a] -> [a] -> [a]
+dropR [] xs = xs
+dropR (i:is) xs = dropR is (delete i xs)
+
+groupC :: Eq a => [Int] -> [a] -> [[[a]]]
+groupC [] xs = [[]]
+groupC (i:is) xs = [(s:g) | s <- selected, g <- (groupC is (dropR s xs))]
+    where   selected = combinations i xs
+
+-- Problem 28
+
+lfsort :: Ord a => [[a]] -> [[a]]
+lfsort = map(\x -> let (a, b) = x in b) . sort . map (\x -> (length x, x))
